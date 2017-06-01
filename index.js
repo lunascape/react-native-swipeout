@@ -157,7 +157,12 @@ const Swipeout = React.createClass({
   },
 
   _handlePanResponderGrant: function(e: Object, gestureState: Object) {
-    if (this.props.disabled) return;
+    var disabled = this.props.disabled;
+    if (!disabled && this.props.shouldOpen) {
+      const { sectionID, rowID } = this.props;
+      disabled = !this.props.shouldOpen(sectionID, rowID);
+    }
+    if (disabled) return;
     this.refs.swipeoutContent.measure((ox, oy, width, height) => {
       let buttonWidth = this.props.buttonWidth || (width/5);
       this.setState({
