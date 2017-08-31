@@ -20,6 +20,7 @@ const styles = StyleSheet.create({
   swipeoutBtnText: {
     color: '#fff',
     textAlign: 'center',
+    width: 80
   },
   swipeoutBtns: {
     bottom: 0,
