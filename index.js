@@ -4,8 +4,10 @@ import styles from './styles';
 
 import React, {
   Component,
-  PropTypes,
 } from 'react';
+
+import PropTypes from 'prop-types';
+import createReactClass from 'create-react-class';
 
 import {
   PanResponder,
@@ -15,7 +17,7 @@ import {
   View,
 } from 'react-native';
 
-const SwipeoutBtn = React.createClass({
+const SwipeoutBtn = createReactClass({
 
   propTypes: {
     backgroundColor: PropTypes.string,
@@ -92,7 +94,7 @@ const SwipeoutBtn = React.createClass({
   }
 });
 
-const Swipeout = React.createClass({
+const Swipeout = createReactClass({
   mixins: [tweenState.Mixin],
 
   propTypes: {

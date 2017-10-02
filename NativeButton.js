@@ -1,6 +1,6 @@
-import React, {
-  PropTypes,
-} from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
+import createReactClass from 'create-react-class';
 
 import {
   TouchableWithoutFeedback,
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const NativeButton = React.createClass({
+const NativeButton = createReactClass({
 
   propTypes: {
     // Extract parent props

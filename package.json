@@ -26,6 +26,7 @@
   },
   "homepage": "https://github.com/dancormier/react-native-swipeout",
   "dependencies": {
+    "create-react-class": "^15.6.2",
     "react-tween-state": "^0.1.5"
   }
 }
