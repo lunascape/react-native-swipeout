@@ -110,6 +110,7 @@ const Swipeout = createReactClass({
     sensitivity: PropTypes.number,
     buttonWidth: PropTypes.number,
     disabled: PropTypes.bool,
+    contentStyle: View.propTypes.style
   },
 
   getDefaultProps: function() {
@@ -139,12 +140,12 @@ const Swipeout = createReactClass({
 
   componentWillMount: function() {
     this._panResponder = PanResponder.create({
-      onStartShouldSetPanResponder: (event, gestureState) => true,
+      onStartShouldSetPanResponder: (event, gestureState) => !this.props.disable && true,
       onStartShouldSetPanResponderCapture: (event, gestureState) =>
-        this.state.openedLeft || this.state.openedRight,
+      !this.props.disable && (this.state.openedLeft || this.state.openedRight),
       onMoveShouldSetPanResponder: (event, gestureState) =>
-        Math.abs(gestureState.dx) > this.props.sensitivity &&
-        Math.abs(gestureState.dy) <= this.props.sensitivity,
+      !this.props.disable && (Math.abs(gestureState.dx) > this.props.sensitivity &&
+        Math.abs(gestureState.dy) <= this.props.sensitivity),
       onPanResponderGrant: this._handlePanResponderGrant,
       onPanResponderMove: this._handlePanResponderMove,
       onPanResponderRelease: this._handlePanResponderEnd,
@@ -246,7 +247,7 @@ const Swipeout = createReactClass({
 
   _tweenContent: function(state, endValue) {
     this.tweenState(state, {
-      easing: tweenState.easingTypes.easeInOutQuad,
+      easing: tweenState.easingTypes.easeInQuad,
       duration: endValue === 0 ? this.state.tweenDuration*1.5 : this.state.tweenDuration,
       endValue: endValue,
     });
@@ -367,7 +368,7 @@ const Swipeout = createReactClass({
       },
     };
 
-    var styleContent = [styles.swipeoutContent];
+    var styleContent = [styles.swipeoutContent, this.props.contentStyle];
     styleContent.push(styleContentPos.content);
 
     var styleRight = [styles.swipeoutBtns];
@@ -404,15 +405,12 @@ const Swipeout = createReactClass({
   },
 
   _renderButtons: function(buttons, isVisible, style) {
-    if (buttons && isVisible) {
-      return( <View style={style}>
-        { buttons.map(this._renderButton) }
-      </View>);
-    } else {
-      return (
-        <View/>
-      );
+    if (buttons == null ) {
+      return null;
     }
+    return (<View style={[style, {opacity: isVisible ? 1 : 0}]}>
+      { buttons.map(this._renderButton) }
+    </View>);
   },
 
   _renderButton: function(btn, i) {
