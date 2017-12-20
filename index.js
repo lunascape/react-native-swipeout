@@ -137,6 +137,9 @@ const Swipeout = createReactClass({
       timeStart: null,
     };
   },
+  setNativeProps: function(nativeProps) {
+    this._root.setNativeProps(nativeProps);
+  },
 
   componentWillMount: function() {
     this._panResponder = PanResponder.create({
@@ -340,10 +343,11 @@ const Swipeout = createReactClass({
   render: function() {
     var contentWidth = this.state.contentWidth;
     var posX = this.getTweeningValue('contentPos');
+    const {style, backgroundColor, contentStyle, children, right, left, ...props} = this.props;
 
-    var styleSwipeout = [styles.swipeout, this.props.style];
-    if (this.props.backgroundColor) {
-      styleSwipeout.push([{ backgroundColor: this.props.backgroundColor }]);
+    var styleSwipeout = [styles.swipeout, style];
+    if (backgroundColor) {
+      styleSwipeout.push([{ backgroundColor: backgroundColor }]);
     }
 
     var limit = -this.state.btnsRightWidth;
@@ -368,7 +372,7 @@ const Swipeout = createReactClass({
       },
     };
 
-    var styleContent = [styles.swipeoutContent, this.props.contentStyle];
+    var styleContent = [styles.swipeoutContent, contentStyle];
     styleContent.push(styleContentPos.content);
 
     var styleRight = [styles.swipeoutBtns];
@@ -381,17 +385,17 @@ const Swipeout = createReactClass({
     var isLeftVisible = posX > 0;
 
     return (
-      <View style={styleSwipeout}>
+      <View style={styleSwipeout} ref={component => this._root = component} {...props}>
         <View
           ref="swipeoutContent"
           style={styleContent}
           onLayout={this._onLayout}
           {...this._panResponder.panHandlers}
         >
-          {this.props.children}
+          {children}
         </View>
-        { this._renderButtons(this.props.right, isRightVisible, styleRight) }
-        { this._renderButtons(this.props.left, isLeftVisible, styleLeft) }
+        { this._renderButtons(right, isRightVisible, styleRight) }
+        { this._renderButtons(left, isLeftVisible, styleLeft) }
       </View>
     );
   },
